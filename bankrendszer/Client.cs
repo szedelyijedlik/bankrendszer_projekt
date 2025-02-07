@@ -12,6 +12,7 @@ namespace bankrendszer
         public DateTime DateOfBirth { get; private set; }
         public string Gender { get; private set; }
         public string Email { get; private set; }
+        public List<Account> Accounts {  get; private set; } 
 
         public Client(string name, DateTime dateOfBirth, string gender, string email)
         {
@@ -19,6 +20,7 @@ namespace bankrendszer
             this.DateOfBirth = dateOfBirth;
             this.Gender = gender;
             this.Email = email;
+            this.Accounts = new List<Account>();
         }
     }
 }
