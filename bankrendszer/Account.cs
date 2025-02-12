@@ -8,11 +8,13 @@ namespace bankrendszer
 {
     internal class Account
     {
+        public string Number { get; private set; }
         public string Name { get; private set; }
         public int Balance { get; private set; }
 
         public Account(string name, int startingBalance)
         {
+            this.Number = Guid.NewGuid().ToString().Split("-")[0];
             Name = name;
             Balance = startingBalance;
         }
