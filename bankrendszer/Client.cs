@@ -9,18 +9,33 @@ namespace bankrendszer
     internal class Client
     {
         public string Name { get; private set; }
-        public DateTime DateOfBirth { get; private set; }
-        public string Gender { get; private set; }
         public string Email { get; private set; }
         public List<Account> Accounts {  get; private set; } 
 
-        public Client(string name, DateTime dateOfBirth, string gender, string email)
+        public Client(string name, string email)
         {
             this.Name = name;
-            this.DateOfBirth = dateOfBirth;
-            this.Gender = gender;
             this.Email = email;
             this.Accounts = new List<Account>();
+        }
+
+        public void CreateAccount(string name, int startingBalance = 10000)
+        {
+            if (name != "")
+            {
+                if (startingBalance >= 5000)
+                {
+                    this.Accounts.Add(new Account(name, startingBalance));
+                }
+                else
+                {
+                    throw new Exception("A kezdőösszeg nem lehet kisebb 5 ezer forintnál");
+                }
+            }
+            else
+            {
+                throw new Exception("Hibás névmegadás");
+            }
         }
     }
 }
