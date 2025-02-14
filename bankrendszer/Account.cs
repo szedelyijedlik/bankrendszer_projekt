@@ -18,5 +18,20 @@ namespace bankrendszer
             Name = name;
             Balance = startingBalance;
         }
+
+        public void AddMoney(int amount)
+        {
+            this.Balance += amount;
+        }
+        
+        public bool Expense(int amount)
+        {
+            if (Balance < amount)
+            {
+                return false;
+            }
+            this.Balance -= amount;
+            return true;
+        }
     }
 }
