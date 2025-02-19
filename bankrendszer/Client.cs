@@ -19,20 +19,20 @@ namespace bankrendszer
             this.Name = name;
             this.Email = email;
             this.Accounts = new List<Account>();
-            this.Income = rand.Next(190500, 1500000);
+            this.Income = rand.Next(190500, 1000000);
         }
 
-        public void CreateAccount(string name, int startingBalance = 10000)
+        public void CreateAccount(string name, int startingBalance = 0)
         {
             if (name != "")
             {
-                if (startingBalance >= 5000)
+                if (startingBalance >= 0)
                 {
                     this.Accounts.Add(new Account(name, startingBalance));
                 }
                 else
                 {
-                    throw new Exception("A kezdőösszeg nem lehet kisebb 5 ezer forintnál");
+                    throw new Exception("A kezdőösszeg nem lehet kisebb 0 forintnál");
                 }
             }
             else

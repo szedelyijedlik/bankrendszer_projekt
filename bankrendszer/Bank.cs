@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace bankrendszer
 {
@@ -59,6 +60,23 @@ namespace bankrendszer
             }
         }
 
+        public Account SearchAccount(string accountNumber)
+        {
+            for (int i = 0; i < Clients.Count; i++)
+            {
+                int j = 0;
+                while (j < Clients[i].Accounts.Count && Clients[i].Accounts[j].Number != accountNumber)
+                {
+                    j++;
+                }
+                if (j < Clients[i].Accounts.Count)
+                {
+                    return Clients[i].Accounts[j];
+                }
+            }
+            throw new Exception("Nem található ilyen számla");
+        }
+
         public void NextMonth(DateTime oldDate, DateTime newDate)
         {
             int diffOfDates = (newDate - oldDate).Days;
@@ -105,7 +123,7 @@ namespace bankrendszer
             }
         }
 
-        public void TransferMoney(Client client, string transferFrom, string transferTo)
+        public void TransferMoney(Client client, DateTime date, string transferFrom, string transferTo, int amount)
         {
             if (transferFrom != "" && transferTo != "")
             {
@@ -114,31 +132,21 @@ namespace bankrendszer
                 {
                     i++;
                 }
-                if (i! < client.Accounts.Count)
+                if (i >= client.Accounts.Count)
                 {
                     throw new Exception("Jogosulatlan erre a műveletre vagy nem létező terhelendő számla");
                 }
-
-                int j = 0;
-                for (int n = 0; n < Clients.Count; n++)
-                {
-                    j = 0;
-                    while (j < Clients[n].Accounts.Count && Clients[n].Accounts[j].Number != transferTo)
-                    {
-                        j++;
-                    }
-                    if (j < Clients[n].Accounts.Count)
-                    {
-                        break;
-                    }
-                    j = 0;
-                }
-                if (j == 0)
-                {
-                    throw new Exception("Nem létező kedvezményezett számla");
-                }
-
                 
+                Account TransferTo = SearchAccount(transferTo);
+                if (client.Accounts[i].Expense(amount))
+                {
+                    TransferTo.AddMoney(amount);
+                    Logs.Add(new Log(date, $"{client.Name} utalt a {TransferTo.Number} számlára {amount.ToString("N0")} forintot."));
+                }
+                else
+                {
+                    throw new Exception("Nincs elég fedezet az utaláshoz");
+                }
             }
             else
             {

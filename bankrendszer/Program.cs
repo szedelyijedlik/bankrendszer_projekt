@@ -11,6 +11,8 @@ namespace bankrendszer
             Bank bank = new Bank();
 
             bank.AddClient("Lakatos Mihály", "lakatos.mihaly@gmail.com");
+            bank.SearchClient("Lakatos Mihály").CreateAccount("Főszámla", 20000);
+            bank.SearchClient("Lakatos Mihály").CreateAccount("Másik számla", 5000);
             bank.AddClient("Marok László", "marok.laszlo444@gmail.com");
             bank.SearchClient("Marok László").CreateAccount("Főszámla", 40000);
             bank.AddClient("Bokor Málna", "bokor.malna@gmail.com");
@@ -70,7 +72,7 @@ namespace bankrendszer
                                         }
                                         else
                                         {
-                                            client.CreateAccount("Főszámla");
+                                            client.CreateAccount("Főszámla", 10000);
                                         }
                                         break;
                                     case 2:
@@ -79,7 +81,11 @@ namespace bankrendszer
                                         string transferFrom = Console.ReadLine()!;
                                         Console.Write("Kedvezményezett számla száma: ");
                                         string transferTo = Console.ReadLine()!;
-                                        bank.TransferMoney(client, transferFrom, transferTo);
+                                        Console.Write("Utalandó összeg: ");
+                                        int amount = int.Parse(Console.ReadLine()!);
+
+                                        Random rand = new Random();
+                                        bank.TransferMoney(client, date.AddDays(rand.Next(1, 20)), transferFrom, transferTo, amount);
                                         break;
                                 }
                             }
@@ -106,7 +112,7 @@ namespace bankrendszer
                         break;
                     case 4:
                         bank.NextMonth(date, date.AddMonths(1));
-                        Console.WriteLine($"\t{date.ToString("yyyy-MM-dd")}-{date.AddMonths(1).ToString("yyyy-MM-dd")}");
+                        Console.WriteLine($"\t{date.ToString("yyyy-MM-dd")} - {date.AddMonths(1).ToString("yyyy-MM-dd")}");
                         Console.WriteLine("----------------------------------------------");
                         Console.WriteLine();
                         foreach (var log in bank.Logs)
@@ -129,7 +135,6 @@ namespace bankrendszer
             Console.WriteLine("2 - Ügyfél kezelés");
             Console.WriteLine("3 - Ügyfelek listája");
             Console.WriteLine("\n4 - Következő hónap");
-            //Console.WriteLine("5 - Log megtekintése");
             Console.WriteLine("\n0 - Kilépés");
 
             char input;
